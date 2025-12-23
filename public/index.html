@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notefyy | Your Study Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <div class="content">
+        <nav>
+            <div class="container">
+                <div class="nav-content">
+                    <div class="logo">
+                        Notefyy
+                        <span class="pen-icon">🖊️</span>
+                    </div>
+                    <ul class="nav-links">
+                        <li><a href="#" class="nav-link">Home</a></li>
+                        <li><a href="#" class="nav-link" onclick="toggleModal(); return false;">Contact Us</a></li>
+                        <li><button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                            <span class="theme-icon">🌙</span>
+                        </button></li>
+                        <li><a href="https://forms.gle/GJ3N2DH5unaADMLK9" target="_blank" class="btn-contribute">Contribute</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <header>
+            <div class="container">
+                <h1>Select a Subject</h1>
+                <p class="subtitle">Your Study Hub for Quality Notes</p>
+                <div class="search-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchBar" class="search-input" placeholder="Search your subject...">
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="container">
+                <div id="subject-grid" class="subject-grid"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="feedback-modal" class="modal">
+        <div class="modal-card">
+            <h3>Feedback</h3>
+            <p>Help us improve Notefyy</p>
+            <input type="email" class="form-input" placeholder="Your Email Address" id="emailInput">
+            <textarea class="form-input" placeholder="Your message..." id="messageInput"></textarea>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="sendFeedback()">Submit</button>
+                <button class="btn btn-secondary" onclick="toggleModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notes-modal" class="modal">
+    <div class="modal-card">
+        <h3 id="modal-subject-name">Subject Notes</h3>
+        <p id="modal-status">Fetching files from Drive...</p>
+        <div id="file-container" class="file-list">
+            </div>
+        <div class="button-group">
+            <button class="btn btn-secondary" onclick="closeNotesModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- PDF Preview Modal -->
+<div id="pdf-modal" class="modal">
+  <div class="modal-content pdf-content">
+    <div class="pdf-header">
+      <h3 id="pdf-title"></h3>
+      <a id="drive-link" target="_blank">Open in Google Drive ↗</a>
+    </div>
+
+    <iframe id="pdf-frame"></iframe>
+
+    <button onclick="closePdfModal()" class="close-btn">Close</button>
+  </div>
+</div>
+
+
+    <script src="js/main.js"></script>
+</body>
+</html>
