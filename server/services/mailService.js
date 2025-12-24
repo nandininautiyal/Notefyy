@@ -1,32 +1,33 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
+
+console.log("EMAIL_USER exists:", !!process.env.EMAIL_USER);
+console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
 });
 
-// Optional but VERY useful for debugging
-transporter.verify((err, success) => {
-    if (err) {
-        console.error('❌ Mail transporter error:', err);
-    } else {
-        console.log('✅ Mail transporter ready');
-    }
+// verify transporter on startup
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("❌ Mail transporter error:", error);
+  } else {
+    console.log("✅ Mail server ready");
+  }
 });
 
 const sendFeedbackEmail = async (studentEmail, message) => {
-    const mailOptions = {
-        from: `"Notefyy Feedback" <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_USER,
-        replyTo: studentEmail,
-        subject: `✨ New Notefyy Feedback`,
-        text: `From: ${studentEmail}\n\nMessage:\n${message}`
-    };
-
-    return transporter.sendMail(mailOptions);
+  return transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,
+    replyTo: studentEmail,
+    subject: `Notefyy Feedback from ${studentEmail}`,
+    text: message,
+  });
 };
 
 module.exports = { sendFeedbackEmail };
