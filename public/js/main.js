@@ -62,8 +62,8 @@ function toggleModal() {
 window.toggleModal = toggleModal;
 
 async function sendFeedback() {
-    const email = document.getElementById("emailInput").value;
-    const message = document.getElementById("messageInput").value;
+    const email = document.getElementById("emailInput").value.trim();
+    const message = document.getElementById("messageInput").value.trim();
 
     if (!email || !message) {
         alert("Please fill in all fields");
@@ -77,20 +77,25 @@ async function sendFeedback() {
             body: JSON.stringify({ email, message })
         });
 
-        if (res.ok) {
-            alert("Thank you for your feedback!");
-            toggleModal();
-            document.getElementById("emailInput").value = "";
-            document.getElementById("messageInput").value = "";
-        } else {
-            alert("Failed to send feedback");
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.error || "Failed to send feedback");
         }
+
+        alert("Thank you for your feedback! 💜");
+
+        // CLEAR + CLOSE
+        document.getElementById("emailInput").value = "";
+        document.getElementById("messageInput").value = "";
+        document.getElementById("feedback-modal").classList.remove("active");
+
     } catch (err) {
-        console.error(err);
-        alert("Server error");
+        console.error("Feedback error:", err);
+        alert("Feedback failed. Please try again later.");
     }
 }
-window.sendFeedback = sendFeedback;
+
 
 /* ===============================
    5. NOTES MODAL (DRIVE FETCH)
