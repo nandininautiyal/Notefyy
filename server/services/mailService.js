@@ -1,47 +1,30 @@
-const sgMail = require('@sendgrid/mail');
+const { Resend } = require("resend");
 
-console.log("SENDGRID_API_KEY exists:", !!process.env.SENDGRID_API_KEY);
-console.log("SENDGRID_VERIFIED_SENDER exists:", !!process.env.SENDGRID_VERIFIED_SENDER);
+console.log("RESEND_API_KEY exists:", !!process.env.RESEND_API_KEY);
 
-if (!process.env.SENDGRID_API_KEY) {
-  console.error("❌ SENDGRID_API_KEY is missing!");
-} else {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  console.log("✅ SendGrid configured successfully");
-}
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendFeedbackEmail = async (studentEmail, message) => {
-  console.log(`📧 Sending email via SendGrid from: ${studentEmail}`);
-  
+  console.log("📧 Sending email via Resend...");
+
   try {
-    const msg = {
-      to: process.env.SENDGRID_VERIFIED_SENDER, // Your email (to receive feedback)
-      from: process.env.SENDGRID_VERIFIED_SENDER, // Must match verified sender
-      replyTo: studentEmail, // So you can reply to the student
+    const response = await resend.emails.send({
+      from: "Notefyy <onboarding@resend.dev>",
+      to: ["nautiyal.nkind@gmail.com"], 
+      reply_to: studentEmail,
       subject: `Notefyy Feedback from ${studentEmail}`,
-      text: message,
       html: `
-        <h3>New Feedback from Notefyy</h3>
+        <h3>New Feedback Received</h3>
         <p><strong>From:</strong> ${studentEmail}</p>
         <p><strong>Message:</strong></p>
         <p>${message}</p>
       `,
-    };
-    
-    const response = await sgMail.send(msg);
-    console.log("✅ Email sent successfully via SendGrid!");
-    console.log("Status code:", response[0].statusCode);
-    
+    });
+
+    console.log("✅ Email sent via Resend!");
     return response;
   } catch (error) {
-    console.error("❌ SendGrid error!");
-    console.error("Error code:", error.code);
-    console.error("Error message:", error.message);
-    
-    if (error.response) {
-      console.error("Error body:", error.response.body);
-    }
-    
+    console.error("❌ Resend error:", error);
     throw error;
   }
 };
